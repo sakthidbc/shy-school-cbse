@@ -3,28 +3,26 @@ name: 🚀 Test Deploy to cPanel
 on:
   push:
     branches:
-      - main   # or 'main' if that’s your branch name
+      - main   # or master, depending on your repo
 
 jobs:
   ftp-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code from your repository
       - name: 🧱 Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Deploy only the files you want
       - name: 🚀 Upload index.html to cPanel
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftp
-          local-dir: ./          # your local repo folder (root)
-          server-dir: /public_html/demodomain.com/github/   # your exact path on cPanel
+          local-dir: ./
+          server-dir: /public_html/demodomain.com/github/
           exclude: |
             **/.git*
             **/.github*
