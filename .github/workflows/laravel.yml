@@ -1,43 +1,19 @@
-name: 🚀 Deploy Laravel + React (Vite) to cPanel
+name: 🚀 Test Deploy to cPanel
 
 on:
   push:
     branches:
-      - master   # deploy when pushing to master branch
+      - master   # or 'main' depending on your repo
 
 jobs:
-  build-and-deploy:
+  ftp-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout Code
       - name: 🧱 Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Setup PHP (for Laravel)
-      - name: ⚙️ Setup PHP and Composer
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-
-      # Step 3: Install Laravel dependencies
-      - name: 📦 Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      # Step 4: Setup Node (for Vite React)
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      # Step 5: Install npm dependencies and build Vite
-      - name: 🧩 Install npm deps and build frontend
-        run: |
-          npm ci
-          npm run build
-
-      # Step 6: Deploy to cPanel via FTP
-      - name: 🚀 Deploy to cPanel
+      - name: 🚀 Upload index.html to cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -49,8 +25,3 @@ jobs:
           exclude: |
             **/.git*
             **/.github*
-            **/node_modules/**
-            **/vendor/**
-            **/tests/**
-            **/storage/**
-            **/.env
